@@ -1,0 +1,18 @@
+meta {
+  name: POST Expenses
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:3000/api/expenses
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Switch Purchase",
+    "amount": 500
+  }
+}

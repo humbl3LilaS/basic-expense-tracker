@@ -2,11 +2,7 @@ import {Hono} from "hono";
 import {z} from "zod";
 import {zValidator} from "@hono/zod-validator";
 
-type Expense = {
-    id: number;
-    title: string;
-    amount: number;
-}
+type Expense = z.infer<typeof expenseSchema>
 
 const fakeExpenses: Expense[] = [
     {
@@ -26,10 +22,13 @@ const fakeExpenses: Expense[] = [
     }
 ]
 
-const createPostSchema = z.object({
-    title: z.string(),
-    amount: z.number(),
+const expenseSchema = z.object({
+    id: z.number().int().positive().min(1),
+    title: z.string().min(3).max(100),
+    amount: z.number().int().positive(),
 })
+
+const createPostSchema = expenseSchema.omit({id: true})
 
 
 const expensesRoute = new Hono()
@@ -42,7 +41,7 @@ const expensesRoute = new Hono()
             const id = Number.parseInt(ctx.req.param("id"));
             const expense = fakeExpenses.find(item => item.id === id)
             if (!expense) {
-                return ctx.json({error: "Not found"}, 404)
+                return ctx.notFound();
             }
             return ctx.json({expense: expense})
         }
@@ -55,6 +54,20 @@ const expensesRoute = new Hono()
             fakeExpenses.push({...expense, id: fakeExpenses.length + 1})
             return ctx.json({expense: expense})
         })
+    .delete(
+        "/:id{[0-9]+}",
+        async (ctx) => {
+            const id = Number.parseInt(ctx.req.param("id"));
+            const expenseIdx = fakeExpenses.findIndex(item => item.id === id)
+            if (expenseIdx === -1) {
+                return ctx.notFound();
+            }
+            const deletedExpense = fakeExpenses.splice(expenseIdx, 1)[0];
+
+            return ctx.json({expense: deletedExpense})
+
+        }
+    )
 
 
 export default expensesRoute;

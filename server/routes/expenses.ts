@@ -18,7 +18,7 @@ const fakeExpenses: Expense[] = [
     {
         id: 3,
         title: "Keyboard Purchase",
-        amount: 500,
+        amount: 600,
     }
 ]
 

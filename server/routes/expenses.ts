@@ -46,6 +46,16 @@ const expensesRoute = new Hono()
             return ctx.json({expense: expense})
         }
     )
+    .get(
+        "/total-spent",
+        async (ctx) => {
+            const total = fakeExpenses.reduce(
+                (acc, curr) => {
+                    return acc + curr.amount;
+                }, 0)
+            return ctx.json({total})
+        }
+    )
     .post(
         "/",
         zValidator("json", createPostSchema),

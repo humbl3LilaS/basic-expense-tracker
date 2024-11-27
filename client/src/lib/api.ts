@@ -1,5 +1,5 @@
 import {hc} from "hono/client";
-import {ApiRoutes} from "../../../server/app.ts";
+import {ApiRoutes} from "@server/app.ts";
 
 const client = hc<ApiRoutes>("http://localhost:5173/")
 

@@ -1,7 +1,6 @@
 import {Hono} from "hono";
 import {z} from "zod";
 import {zValidator} from "@hono/zod-validator";
-
 type Expense = z.infer<typeof expenseSchema>
 
 const fakeExpenses: Expense[] = [

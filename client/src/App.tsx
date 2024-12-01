@@ -1,17 +1,9 @@
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {useQuery} from "@tanstack/react-query";
-import {api} from "@/lib/api.ts";
+import {useTotalAmount} from "@/hooks/use-total-amount.ts";
 
 
 function App() {
-    const {data} = useQuery({
-        queryKey: ["total-spent"],
-        queryFn: async () => {
-            const data = await api.expenses["total-spent"].$get();
-            return data.json();
-        }
-    })
-
+    const {data, isPending} = useTotalAmount();
     return (
         <section className={"w-screen h-screen flex items-center justify-center"}>
             <Card className={"w-[350px]"}>
@@ -24,7 +16,7 @@ function App() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    {data?.total}
+                    {isPending ? "..." : data?.total}
                 </CardContent>
             </Card>
         </section>

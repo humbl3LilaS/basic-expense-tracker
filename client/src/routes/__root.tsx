@@ -20,6 +20,9 @@ function RootComponent() {
                         <Link href="/expenses">
                             Expenses
                         </Link>
+                        <Link href="/create-expense">
+                            Create Expense
+                        </Link>
                     </nav>
                 </header>
                 <Outlet/>
